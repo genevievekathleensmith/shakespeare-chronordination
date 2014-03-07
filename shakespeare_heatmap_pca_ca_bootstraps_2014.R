@@ -1,7 +1,7 @@
 #install.packages('scales')
 #install.packages('ca')
 
-data = read.csv('~/Documents/shakespeare/SH DATA all counts A minus C Ed Bruster 11-5 Smith 11-15.csv')
+data = read.csv('~/Documents/shakespeare-chronordination/SH DATA all counts A minus C Ed Bruster 11-5 Smith 11-15.csv')
 library(scales)
 library(ca)
 
@@ -37,6 +37,51 @@ text(c(-1,-.5,0,1,1),c(2,-2,3,2,-2),plays_of_interest,cex=.7)
 segments(c(-1,-.5,0,1,1),c(2,-2,3,2,-2)*.9,ca_results$rowcoord[play_indicies,1],ca_results$rowcoord[play_indicies,2])
 points(ca_results$rowcoord[play_indicies,1],ca_results$rowcoord[play_indicies,2],pch=21,bg='grey',cex=ca_results$rowmass[play_indicies]*50)
 
+dates = read.csv('~/Documents/shakespeare-chronordination/alldates.csv')
+
+
+all(levels(dates$abbrv) == levels(data$abbrv))
+names(data)
+merged = merge(data,dates,by.x='abbrv',by.y='abbrv')
+
+x3 = data.frame(prop.table(as.matrix(merged[,3:11]),1))
+
+library(segmented)
+
+par(mfrow=c(3,3))
+par(mar=c(1,1,1,1))
+for (i in 1:9) {
+  plot(0,0,type='n',xlim=c(1590,1615),ylim=c(0,.4),las=1,axes=F)
+  points(merged$oxford,x3[,i],pch=19,cex=.3)
+  lines(lowess(x=merged$oxford,y=x3[,i],f=.3))
+  axis(1)
+  axis(2,las=1)
+}
+
+
+plot(0,0,type='n',xlim=c(1590,1615),ylim=c(0,1),las=1,axes=F)
+points(merged$oxford,x3[,1]+x3[,2]+x3[,3]+x3[,4]+x3[,5],pch=19,cex=.3)
+lines(lowess(x=merged$oxford,y=x3[,1]+x3[,2]+x3[,3]+x3[,4]+x3[,5],f=.3))
+axis(1)
+axis(2,las=1)
+points(merged$oxford,x3[,6]+x3[,7]+x3[,8]+x3[,9],pch=19,cex=.3)
+lines(lowess(x=merged$oxford,y=x3[,6]+x3[,7]+x3[,8]+x3[,9],f=.3))
+
+early = x3[,1]+x3[,2]+x3[,3]+x3[,4]
+late = x3[,5]+x3[,6]+x3[,7]+x3[,8]+x3[,9]
+
+
+x <- merged$oxford
+y <- early
+
+lin.mod <- lm(y~x)
+segmented.mod <- segmented(lin.mod, seg.Z = ~x, psi=1605)
+
+plot(y~x)
+abline(lin.mod)
+plot(segmented.mod,add=T)
+summary(segmented.mod)
+#lines(lowess(x=merged$oxford,y=x3$second),col='blue')
 
 
 # so, the Correspondence Analysis now includes the information we have about play length, reflecting shakespeare's contributions.
