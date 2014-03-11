@@ -2,7 +2,7 @@
 #install.packages('ca')
 
 data = read.csv('~/Documents/shakespeare-chronordination/SH DATA all counts A minus C Ed Bruster 11-5 Smith 11-15.csv')
-library(scales)
+headlibrary(scales)
 library(ca)
 
 head(data)
@@ -216,6 +216,27 @@ for (i in 1:41) {polygon(out[4][[1]][[i]],col=alpha('green',.4))}
 
 #points(ca_results$rowcoord[,1],ca_results$rowcoord[,2],col='green')
 
+names(ca_results)
+points(ca_results$rowcoord)
+[,1]%*%ca_results$rowinertia,pch=19)
+
+
+
+points(out[2][[1]])
+plot(out[2][[1]])
+
+
+
+
+
+data$Title[order(out[2][[1]][,1])]
+
+
+
+
+
+
+
 
 # plot original CA rows and columns
 par(mfrow=c(1,2))
@@ -241,6 +262,8 @@ text(data.row[,1],data.row[,2],temp$Title[temp$Author=='Shakespeare'],font=2,cex
 
 
 
+points(out[2][[1]])
+plot(out[2][[1]])
 
 
 # NOW LET US COMPARE THE ANALYSES : IF WE HAD TO GUESS AT THE DATES FOR EACH PLAY, USING ONLY INTERNAL EVIDENCE, WHAT WOULD OUR CHRONOLOGY LOOK LIKE?
