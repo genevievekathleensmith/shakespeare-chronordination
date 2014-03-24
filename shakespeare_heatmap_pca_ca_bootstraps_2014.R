@@ -2,10 +2,40 @@
 #install.packages('ca')
 
 data = read.csv('~/Documents/shakespeare-chronordination/SH DATA all counts A minus C Ed Bruster 11-5 Smith 11-15.csv')
-headlibrary(scales)
+
+library(scales)
 library(ca)
 
-head(data)
+dates = read.csv('Documents/shakespeare-chronordination/dates.csv')
+dates = dates[,c(4,2)]
+
+data = merge(data,dates)
+data = data[order(data$oxford),]
+
+
+par(mfrow=c(3,14))
+for (i in 1:41){
+if (i==1|i==15|i==29){par(mar=c(2,3,2,1))} else {par(mar=c(2,1,2,1))}
+vals = data[i,3:11]/sum(data[i,3:11])
+plot(1:9,vals,type='n',axes=F,ylim=c(0,.4))
+#gradient.rect(0,0,9,.4,reds=c(0,1),greens=c(0,1),blues=c(0,1),gradient="x",border=NA)
+polygon(c(1:9,9:1),c(rep(0,9),rev(vals)),col='lightgrey',border=NA)
+axis(1,at=c(1,9))
+if (i==1|i==15|i==29){axis(2,las=1,at=c(0,.4))}
+}
+
+install.packages('plotrix')
+library(plotrix)
+
+plot(0,1,type='n',xlim=c(0,9),ylim=c(0,.4))
+gradient.rect(0,0,9,.4,reds=c(0,1),greens=c(0,1),blues=c(0,1),gradient="x",border=NA)
+
+
+41/3
+6*7
+14+14+14
+
+
 colorRampPalette(colors=c('blue','green'))(3)
 heatmap(cor(t(data[,c(2:10)])),Rowv=NA,labRow=data$Title,labCol=NA,col=colorRampPalette(colors=c('red','royalblue'))(100),mar=c(1,4),asp=1,symm=TRUE)
 heatmap(cor(t(data[,c(2:10)])),labRow=data$Title,labCol=NA,col=colorRampPalette(colors=c('red','royalblue'))(100),asp=1,symm=TRUE,mar=c(1,1))
@@ -99,12 +129,11 @@ summary(segmented.mod)
 #http://www.mattpeeples.net/caboot.html
 
 
-row.names(mydata) = temp$Title[temp$Author=='Shakespeare']
 
 ca_boot_function = function(mydata) {
   data.ca <- ca(mydata)
-  mydata = data[,2:10]
-  data.ca <- ca(data[,2:10])
+#  mydata = data[,2:10]
+#  data.ca <- ca(data[,2:10])
   
 
 # define variables
@@ -188,15 +217,21 @@ for (j in 1:coln) {
   hpts <- c(hpts,hpts[1])
   poly.col[[j]] <- points[hpts,]}
 
-
+#data.col <- t(t(data.rowsc) %*% mydata) / apply(mydata,2,sum) # set column label positions
+#data.row <- t(t(data.colsc) %*% t(mydata)) / apply(mydata,1,sum) # set column label positions
+#print(data.col)
 return(list(data.ca,data.rowsc,data.colsc,poly.row))
 }
 
 
 out = ca_boot_function(data[,2:10])
 
+plot(t(t(out[[3]]) %*% t(as.matrix(data[,2:10])))/apply(data[,2:10],1,sum))
+t(t(out[[2]]) %*% as.matrix(data[,2:10]))/apply(data[,2:10],2,sum)
+
 names(out)
 class(out)
+
 out[1]
 out[2]
 out[3][[1]]
@@ -208,62 +243,12 @@ plot(out[2][[1]],xlim=c(-1.5,3))
 arrows(0,0,out[3][[1]][,1],out[3][[1]][,2])
 text(out[3][[1]],labels=1:9)
 
-ylimit = .75
+ylimit = .55
 xlimit = .55
-plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),asp=1)
-for (i in 1:41) {polygon(out[4][[1]][[i]],col=alpha('green',.4))}
-?polygon
+plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit))
+for (i in 1:41) {polygon(out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
+text(t(t(out[[3]]) %*% t(as.matrix(data[,2:10])))/apply(data[,2:10],1,sum),labels=data$abbrv,cex=.6,col='black')
 
-#points(ca_results$rowcoord[,1],ca_results$rowcoord[,2],col='green')
-
-names(ca_results)
-points(ca_results$rowcoord)
-[,1]%*%ca_results$rowinertia,pch=19)
-
-
-
-points(out[2][[1]])
-plot(out[2][[1]])
-
-
-
-
-
-data$Title[order(out[2][[1]][,1])]
-
-
-
-
-
-
-
-
-# plot original CA rows and columns
-par(mfrow=c(1,2))
-plot(data.ca) 
-
-points()
-plot(data.ca$rowcoord[,1],data.ca$rowcoord[,2],pch=19)
-,col=alpha(temp$Author,.3)
-abline(h=0,lty=3)
-abline(v=0,lty=3)
-
-palette(c('black','red','cyan','purple','orange','black','black','green','blue','black','black'))
-plot(data.rowsc[,1],data.rowsc[,2],type='p',xlab='CA1',ylab='CA2',main='All Simulated Data',xlim=c(-.7,.7),ylim=c(-.6,.6))
-data.col <- t(t(data.rowsc) %*% mydata) / apply(mydata,2,sum) # set column label positions
-data.row <- t(t(data.colsc) %*% t(mydata)) / apply(mydata,1,sum) # set column label positions
-
-# use last two digits of color code to set transparency
-for (i in 1:length(poly.row)) { 
-  polygon(poly.row[[i]],col=alpha('blue',.05),border=alpha('blue',.4))}
-
-
-text(data.row[,1],data.row[,2],temp$Title[temp$Author=='Shakespeare'],font=2,cex=.3,col='black',adj=c(0.5,2.5))
-
-
-
-points(out[2][[1]])
-plot(out[2][[1]])
 
 
 # NOW LET US COMPARE THE ANALYSES : IF WE HAD TO GUESS AT THE DATES FOR EACH PLAY, USING ONLY INTERNAL EVIDENCE, WHAT WOULD OUR CHRONOLOGY LOOK LIKE?

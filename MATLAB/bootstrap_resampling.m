@@ -17,7 +17,7 @@ x2 = nominal(b)
 
 tab = crosstab(x1,x2)
 
-load('table_data.mat')
+load('table_data_march2014.mat')
 
 res = []
 for i = 1:1000
