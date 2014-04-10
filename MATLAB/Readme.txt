@@ -1,3 +1,7 @@
+***This is a modified version of van de Velden’s original CCA Matlab Toolbox***
+***It has been edited to properly work with pause counts from Shakespeare’s plays***
+***G.K. Smith 2014***
+
 Contrained Correspondence Analysis Matlab Toolbox:
 
 Version 1
