@@ -1,7 +1,10 @@
 
-a = {'a'}
-b = {'b'}
+%a = {'a'}
+%b = {'b'}
 
+
+load('variable_a.mat')
+load('variable_b.mat')
 % open up 'fulldata.csv', copy first column
 
 % double click on a object, it will open in viewer
@@ -20,7 +23,7 @@ tab = crosstab(x1,x2)
 load('table_data_march2014.mat')
 
 res = []
-for i = 1:1000
+for i = 1:10
     henry4part1 = crosstab(datasample(x2(x1=='1 Henry 4'),length(x2(x1=='1 Henry 4'))));
     henry6part1 = crosstab(datasample(x2(x1=='1 Henry 6'),length(x2(x1=='1 Henry 6'))));
     henry4part2 = crosstab(datasample(x2(x1=='2 Henry 4'),length(x2(x1=='2 Henry 4'))));
@@ -62,6 +65,7 @@ for i = 1:1000
     twogent = crosstab(datasample(x2(x1=='Two Gentlemen Verona'),length(x2(x1=='Two Gentlemen Verona'))));
     twonoble = crosstab(datasample(x2(x1=='Two Noble Kinsmen'),length(x2(x1=='Two Noble Kinsmen'))));
     winters = crosstab(datasample(x2(x1=='Winters Tale'),length(x2(x1=='Winters Tale'))));
+ %   arden = crosstab(datasample(x2(x1=='Arden'),length(x2(x1=='Arden'))));
     permed = transpose(horzcat(henry4part1,henry6part1,henry4part2,henry6part2,henry6part3,alls, antony, asyou, errors, coriolanus, cymbeline, ed3, hamlet, henry5, henry8, julius, john, lear, loves, macbeth, measure, merchant, merry, midsummer, muchado, othello, pericles, richard2, richard3, romeo, sirthomas, spanish, taming, tempest, timon, titus, trolius, twelfth, twogent, twonoble, winters ));
     Data.F = permed;
     res(:,i) = CAalsInequal_SH_YEARS(Data,1,1);

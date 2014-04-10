@@ -6,7 +6,7 @@
     <style type="text/css">
 
 svg {
-  font: 10px sans-serif;
+  font: 14px sans-serif, Helvetica;
 }
 
 .background path {
@@ -14,12 +14,15 @@ svg {
   stroke: #ccc;
   stroke-opacity: .4;
   shape-rendering: crispEdges;
+  stroke-width: 1.5px;
+
 }
 
 .foreground path {
   fill: none;
   stroke: steelblue;
   stroke-opacity: .7;
+  stroke-width: 1.5px;
 }
 
 .brush .extent {
@@ -65,12 +68,15 @@ var svg = d3.select("body").append("svg:svg")
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-d3.csv("cars.csv", function(cars) {
+
+
+d3.csv("date_data.csv", function(cars) {
+//d3.csv("cars.csv", function(cars) {
 
   // Extract the list of dimensions and create a scale for each.
   x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
-    return d != "name" && (y[d] = d3.scale.linear()
-        .domain(d3.extent(cars, function(p) { return +p[d]; }))
+    return d != "Title" && d != "Tarlinskaja_date" && d != "abbrv" && d != "upper_95" && d != "lower_95" && (y[d] = d3.scale.linear()
+        .domain([1589,1615])
         .range([h, 0]));
   }));
 
@@ -138,6 +144,7 @@ d3.csv("cars.csv", function(cars) {
     .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
+
 });
 
 function position(d) {

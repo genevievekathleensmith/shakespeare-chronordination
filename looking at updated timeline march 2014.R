@@ -7,6 +7,7 @@ data = read.csv('cca_prediction_march2014_tempest.csv')
 
 #boot = read.table('boots.txt')
 boot = read.table('boots_tempest.txt')
+boot = read.table('boots_verse.txt')
 names = read.csv('cca_bootstrap_play_titles.csv',header=F)
 #names = read.table('raw_data_titles.txt')
 names = names[,1]
@@ -35,6 +36,10 @@ levels(combined$Title)[which(levels(combined$Title)=='WIN')] = 'WT'
 
 
 
+plot(combined$mean_cca,pch=19,col='grey',ylim=c(1615,1590))
+segments(1:41,combined$lower_95,1:41,combined$upper_95,col='grey')
+points(combined$cca_prediction)
+text(1:41,combined$cca_prediction+2,labels=combined$Title,cex=.5)
 
 
 plot(sort(combined$cca_prediction),ylim=c(1615,1590),type='n',ylab='Predicted Year from CCA',las=1)
@@ -89,6 +94,18 @@ for (i in 1:length(close)) {
 
 
 
+sorted = combined[order(combined$cca_prediction),]
 
+
+plot(sorted$mean_cca,pch=19,col='grey',ylim=c(1615,1590),ylab='Year',las=1)
+segments(1:41,sorted$lower_95,1:41,sorted$upper_95,col='grey')
+points(sorted$cca_prediction)
+text(1:41,sorted$cca_prediction+1,labels=sorted$Title,cex=.5)
+for (i in 1:length(close)) {
+  polygon(c(0,0,41,41),c(close[i],open[i+1],open[i+1],close[i]),col=alpha('black',.1),border=NA)
+}
+
+write.csv(sorted,'sorted_cca_predictions_march2014.csv',row.names=F)
+write.csv(sorted,'sorted_cca_predictions_verselines.csv',row.names=F)
 
 write.csv(combined,'cca_bootstrap_confidence_intervals_march2014.csv',row.names=F)

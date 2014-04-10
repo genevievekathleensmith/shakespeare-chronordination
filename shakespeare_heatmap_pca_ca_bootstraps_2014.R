@@ -6,34 +6,37 @@ data = read.csv('~/Documents/shakespeare-chronordination/SH DATA all counts A mi
 library(scales)
 library(ca)
 
-dates = read.csv('Documents/shakespeare-chronordination/dates.csv')
+dates = read.csv('~/Documents/shakespeare-chronordination/dates.csv')
 dates = dates[,c(4,2)]
 
 data = merge(data,dates)
 data = data[order(data$oxford),]
 
-
-par(mfrow=c(3,14))
+par(mar=c(1,1,1,1))
+par(mfcol=c(14,3))
 for (i in 1:41){
-if (i==1|i==15|i==29){par(mar=c(2,3,2,1))} else {par(mar=c(2,1,2,1))}
+#if (i==1|i==15|i==29){par(mar=c(2,3,2,1))} else {par(mar=c(2,1,2,1))}
 vals = data[i,3:11]/sum(data[i,3:11])
 plot(1:9,vals,type='n',axes=F,ylim=c(0,.4))
 #gradient.rect(0,0,9,.4,reds=c(0,1),greens=c(0,1),blues=c(0,1),gradient="x",border=NA)
 polygon(c(1:9,9:1),c(rep(0,9),rev(vals)),col='lightgrey',border=NA)
-axis(1,at=c(1,9))
-if (i==1|i==15|i==29){axis(2,las=1,at=c(0,.4))}
+#axis(1,at=c(1,9))
+#if (i==1|i==15|i==29){axis(2,las=1,at=c(0,.4))}
 }
 
-install.packages('plotrix')
-library(plotrix)
+#install.packages('plotrix')
+#library(plotrix)
 
-plot(0,1,type='n',xlim=c(0,9),ylim=c(0,.4))
-gradient.rect(0,0,9,.4,reds=c(0,1),greens=c(0,1),blues=c(0,1),gradient="x",border=NA)
+#plot(0,1,type='n',xlim=c(0,9),ylim=c(0,.4))
+#gradient.rect(0,0,9,.4,reds=c(0,1),greens=c(0,1),blues=c(0,1),gradient="x",border=NA)
 
-
-41/3
-6*7
-14+14+14
+library(gplots)
+svg("~/Documents/shakespeare-chronordination/heatmap_bw.svg",width=5)
+heatmap.2(prop.table(as.matrix(data[,3:11]),1),Rowv=F,Colv=F,trace='none',key=F,keysize=.5,labRow=paste(data$Title,data$oxford,sep=", "), lmat=rbind(c(0,3,4),c(2,1,0)), lwid = c(.5,1,1),labCol=NA,col=grey(c(100:1/100)),dendrogram='none')
+#axis(1,at = seq(.115,.4,length.out=9),labels=c(1:9),cex.axis=.5,lty=0)
+#axis(1)
+legend(.85,.35,col=grey(seq(0,1,.1)),legend=c('100 %',rep('',4),'50 %',rep('',4),'0%'),box.lty=0,cex=.5,pch=15,y.intersp=.7,pt.cex=1.25,title='Proportion\nof pauses\n')
+dev.off()
 
 
 colorRampPalette(colors=c('blue','green'))(3)

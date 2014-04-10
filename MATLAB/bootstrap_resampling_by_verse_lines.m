@@ -17,7 +17,8 @@ x2 = nominal(b)
 
 tab = crosstab(x1,x2)
 
-load('table_data.mat')
+%load('table_data.mat')
+load('table_data_march2014.mat')
 
 % use the 'IMPORT DATA' button to import the file verse_line_counts.csv
 % import two items: title and verse_lines
