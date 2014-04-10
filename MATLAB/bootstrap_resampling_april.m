@@ -3,8 +3,8 @@
 %b = {'b'}
 
 
-load('variable_a_april.mat')
-load('variable_b_april.mat')
+load('variable_a.mat')
+load('variable_b.mat')
 % open up 'fulldata.csv', copy first column
 
 % double click on a object, it will open in viewer
