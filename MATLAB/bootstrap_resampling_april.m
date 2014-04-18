@@ -5,15 +5,6 @@
 
 load('variable_a.mat')
 load('variable_b.mat')
-% open up 'fulldata.csv', copy first column
-
-% double click on a object, it will open in viewer
-% right mouse click on column heading and paste excel data into viewer
-% play names (or pause names) SHOULD paste in WITHOUT QUOTATIONS
-
-% delete the first entry by deleting the row (to remove 'Title')
-
-% repeat for b to enter pause names
 
 x1 = nominal(a)
 x2 = nominal(b)

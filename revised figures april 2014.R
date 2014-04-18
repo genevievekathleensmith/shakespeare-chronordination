@@ -38,6 +38,10 @@ for (i in 1:dim(props)[1]) {
 }
 dev.off()
 
+data$Title[data$oxford<1593 & data$abbrv != 'ARD']
+data$Title[data$oxford>=1598 & data$oxford<=1601]
+data$Title[data$oxford>1607]
+
 early = props[data$oxford<1593 & data$abbrv != 'ARD',]
 middle = props[data$oxford>=1598 & data$oxford<=1601,]
 late = props[data$oxford>1607,]
@@ -188,7 +192,7 @@ multi_indicies = charmatch(multi_of_interest,multi$Title)
 
 pdf('~/Documents/shakespeare-chronordination/figure4.pdf',width=6,height=6)
 par(mfcol=c(1,1))
-xlimit=.5
+xlimit=-.5
 ylimit=.7
 plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Correspondence Axis 1',ylab='Correspondence Axis 2',las=1,asp=1,axes=F)
 abline(h=0,lty=3,col='grey')
@@ -217,19 +221,10 @@ plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Corres
 abline(h=0,lty=3,col='grey')
 abline(v=0,lty=3,col='grey')
 for (i in sh_ind) {polygon(multi_out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
-for (i in fl) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
+for (i in ml) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
 axis(1,at=c(-.5,0,.5))
 axis(2,at=c(-.5,0,.5),las=1)
-title(main='Fletcher')
-
-plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Correspondence Axis 1',ylab='Correspondence Axis 2',las=1,asp=1,axes=F)
-abline(h=0,lty=3,col='grey')
-abline(v=0,lty=3,col='grey')
-for (i in sh_ind) {polygon(multi_out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
-for (i in jo) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
-axis(1,at=c(-.5,0,.5))
-axis(2,at=c(-.5,0,.5),las=1)
-title(main='Jonson')
+title(main='Marlowe')
 
 plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Correspondence Axis 1',ylab='Correspondence Axis 2',las=1,asp=1,axes=F)
 abline(h=0,lty=3,col='grey')
@@ -244,10 +239,10 @@ plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Corres
 abline(h=0,lty=3,col='grey')
 abline(v=0,lty=3,col='grey')
 for (i in sh_ind) {polygon(multi_out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
-for (i in ml) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
+for (i in pe) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
 axis(1,at=c(-.5,0,.5))
 axis(2,at=c(-.5,0,.5),las=1)
-title(main='Marlowe')
+title(main='Peele')
 
 plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Correspondence Axis 1',ylab='Correspondence Axis 2',las=1,asp=1,axes=F)
 abline(h=0,lty=3,col='grey')
@@ -262,10 +257,20 @@ plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Corres
 abline(h=0,lty=3,col='grey')
 abline(v=0,lty=3,col='grey')
 for (i in sh_ind) {polygon(multi_out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
-for (i in pe) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
+for (i in jo) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
 axis(1,at=c(-.5,0,.5))
 axis(2,at=c(-.5,0,.5),las=1)
-title(main='Peele')
+title(main='Jonson')
+
+plot(x=0,y=0,type='n',xlim=c(-xlimit,xlimit),ylim=c(-ylimit,ylimit),xlab='Correspondence Axis 1',ylab='Correspondence Axis 2',las=1,asp=1,axes=F)
+abline(h=0,lty=3,col='grey')
+abline(v=0,lty=3,col='grey')
+for (i in sh_ind) {polygon(multi_out[4][[1]][[i]],col=alpha('lightgrey',.2),border=NA)}
+for (i in fl) {polygon(multi_out[4][[1]][[i]],border='black',lty=3)}
+axis(1,at=c(-.5,0,.5))
+axis(2,at=c(-.5,0,.5),las=1)
+title(main='Fletcher')
+
 dev.off()
 
 
@@ -273,7 +278,7 @@ dev.off()
 matlab = read.csv('~/Documents/shakespeare-chronordination/MATLAB/CCA_rawpredictions.csv',header=F)
 matlab
 matlab$Title = sort(data$Title)
-anchors = c('3 Henry 6','Henry 5','Pericles')
+anchors = c('3 Henry 6','Julius Caesar','Pericles')
 matlab_indicies = charmatch(anchors,matlab$Title)
 x_vals = matlab$V1[matlab_indicies]
 
@@ -283,8 +288,8 @@ y_vals = ca_results$rowcoord[ca_indicies,1]
 mod = lm(y_vals~x_vals)
 
 pdf('~/Documents/shakespeare-chronordination/figure6.pdf',width=8,height=6)
-plot(x_vals,y_vals,axes=F,xlab='Year of composition',ylab='Correspondence Axis 1 Score',xlim=c(1589,1614),pch=19,ylim=c(-1.5,1.5))
-axis(1)
+plot(x_vals,y_vals,axes=F,xlab='Year of composition',ylab='Correspondence Axis 1 Score',xlim=c(1590,1614),pch=19,ylim=c(-1.5,1.5))
+axis(1,at = seq(1590,1614,4))
 axis(2,las=1)
 abline(mod,lwd=2,lty=2)
 text(x_vals+1,y_vals-.1,anchors,cex=.9,font=3,adj=c(0,0))
@@ -293,10 +298,60 @@ segments(x_vals,y_vals,x_vals,rep(-2,3),lty=3)
 
 segments(0,ca_results$rowcoord[data$Title=='Macbeth',1],matlab$V1[matlab$Title=='Macbeth'],mod$coefficients[1]+mod$coefficients[2]*matlab$V1[matlab$Title=='Macbeth'],lwd=2)
 arrows(matlab$V1[matlab$Title=='Macbeth'],mod$coefficients[1]+mod$coefficients[2]*matlab$V1[matlab$Title=='Macbeth'],matlab$V1[matlab$Title=='Macbeth'],-1.6,length=.1,lwd=2)
-text(1606,-1.5,'Macbeth\n  \n  ',cex=.9,adj=c(0,0),font=4)
-text(1606,-1.5,'  \nCA score = 0.7\nPredicted year = 1604.9',cex=.9,adj=c(0,0))
+text(matlab$V1[matlab$Title=='Macbeth']-.5,-1.5,'Macbeth\n  \n  ',cex=.9,adj=c(1,0),font=4)
+text(matlab$V1[matlab$Title=='Macbeth']-.5,-1.5,paste('  \nCA score = ',round(ca_results$rowcoord[data$Title=='Macbeth',1],3),'\nPredicted year = ',matlab$V1[matlab$Title=='Macbeth'],sep=''),cex=.9,adj=c(1,0))
+
 dev.off()
 
+
+
+
+tar = read.csv('~/Documents/shakespeare-chronordination/tarlinskaja.csv')
+tar_full = na.omit(tar)
+
+tar_of_interest = c('Romeo and Juliet','Richard 3','Hamlet','Macbeth','Tempest')
+tar_indicies = charmatch(tar_of_interest,tar_full$title)
+tar_pca = prcomp(tar_full[,4:46],scale.=T,center=T)
+
+pdf('~/Documents/shakespeare-chronordination/figure7.pdf',width=6,height=6)
+plot(-tar_pca$x[,1],tar_pca$x[,2],axes=F,xlab='Principal Component Axis 1',ylab='Principal Component Axis 2',asp=1,cex=1.2,xlim=c(-9,9),ylim=c(-6,6))
+abline(h=0,lty=3,col='grey')
+abline(v=0,lty=3,col='grey')
+text(c(-6,-2,2,5,8),c(-5,-3,4,-3,-4),tar_full$title[tar_indicies],cex=.7,font=3)
+segments(c(-6,-2,2,5,8),c(-5,-3,4,-3,-4)*.9,-tar_pca$x[tar_indicies,1],tar_pca$x[tar_indicies,2])
+points(-tar_pca$x[tar_indicies,1],tar_pca$x[tar_indicies,2],pch=21,bg='grey',cex=1.2)
+axis(1)
+axis(2,las=1)
+dev.off()
+
+
+
+boots = read.csv('~/Documents/shakespeare-chronordination/MATLAB/CCA_bootpredictions.csv',header=F)
+boots$Title = sort(data$Title)
+mean_boots = apply(boots[,-1001],1,mean)
+upper_boots = apply(boots[,-1001],1,quantile,probs=0.975)
+lower_boots = apply(boots[,-1001],1,quantile,probs=0.025)
+
+standard = data.frame(data$Title,data$abbrv,data$oxford)
+names(standard)=c('Title','abbrv','oxford')
+standard = standard[order(standard$Title),]
+
+mod2 = lm(mean_boots~standard$oxford)
+
+outliers = which((upper_boots > mod2$fitted.values & lower_boots > mod2$fitted.values) | (upper_boots < mod2$fitted.values & lower_boots < mod2$fitted.values))
+outliers = outliers[outliers != matlab_indicies[1] & outliers != matlab_indicies[2] & outliers != matlab_indicies[3]]
+
+pdf('~/Documents/shakespeare-chronordination/figure8.pdf',width=7,height=7)
+plot(standard$oxford,mean_boots, xlab= expression(Standard~Chronology~(Oxford~italic(et~al.))), xlim=c(1589,1614), ylim=c(1589,1614), type='n', las=1,axes=F, ylab='Mean Bootstrapped Date Prediction',asp=1)
+abline(mod2,lwd=2)
+segments(standard$oxford,upper_boots,standard$oxford,lower_boots,lwd=2)
+points(standard$oxford,mean_boots,pch=21,col='black',bg='grey')
+segments(standard$oxford[outliers],upper_boots[outliers],standard$oxford[outliers],lower_boots[outliers],lwd=3)
+points(standard$oxford[outliers],mean_boots[outliers],pch=19)
+text(c(1591, 1605, 1600.5, 1607, 1611.25, 1604.5, 1593, 1603, 1603, 1589.25, 1608.25),c(1596, 1610.364, 1596.689, 1611.75, 1613.217, 1601.053, 1596.5, 1594.082, 1597.811, 1593.646, 1613.5),standard$abbrv[outliers],cex=.8)
+axis(1)
+axis(2,las=1)
+dev.off()
 
 
 
