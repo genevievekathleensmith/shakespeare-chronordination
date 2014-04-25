@@ -259,4 +259,4 @@ dev.off()
 
 to_export = data.frame(temp[,1:2],round(upper_boots,digits=2),round(lower_boots,2),round(shifted,2))
 names(to_export) = c('cca_year','Title','upper_95_CI','lower_95_CI','Shifted_year')
-write.csv(to_export,paste(paste('~/Documents/shakespeare-chronordination/date_table_for_doug',strsplit(date(),split=' ')[[1]][2],strsplit(date(),split=' ')[[1]][3],sep='_'),'.csv',sep=''),row.names=F)
+write.csv(to_export,paste(paste('~/Documents/shakespeare-chronordination/data_table_for_doug',strsplit(date(),split=' ')[[1]][2],strsplit(date(),split=' ')[[1]][3],sep='_'),'.csv',sep=''),row.names=F)
