@@ -94,8 +94,6 @@ anotherway = data.frame(tar_full$title,rescale(tar_pca$x[,1],to=c(1614,1589.5)))
 #head(anotherway)
 # build results file for output
 names(oneway) = c('Title','Tarlinskaja_prediction')
-write.csv(oneway,'~/Dropbox/Bruster & Smith pause manuscript/tarlinskaja_pca_predictions.csv',row.names=F)
-write.csv(oneway,'~/Documents/shakespeare-chronordination/tarlinskaja_pca_predictions.csv',row.names=F)
 
 # read in playhouse status data
 status = read.csv('~/Documents/shakespeare-chronordination/playhouse_status.csv')
@@ -318,8 +316,10 @@ dev.off()
 
 
 
+### WRITING FILES ###
 
-
+write.csv(oneway,'~/Dropbox/Bruster & Smith pause manuscript/tarlinskaja_pca_predictions.csv',row.names=F)
+write.csv(oneway,'~/Documents/shakespeare-chronordination/tarlinskaja_pca_predictions.csv',row.names=F)
 
 
 to_export = data.frame(temp[,2],round(mean_boots,digits=2),round(upper_boots,digits=2),round(lower_boots,2),round(shifted,2))
